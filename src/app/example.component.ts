@@ -29,6 +29,10 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   underlying: Terminal;
 
   @ViewChild('term') child: NgTerminal;
+  @ViewChild('term2') child2: NgTerminal;
+  @ViewChild('term3') child3: NgTerminal;
+  @ViewChild('term4') child4: NgTerminal;
+
 
   constructor() { }
 
@@ -45,7 +49,6 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     this.child.keyInput.subscribe((input) => {
       //do nothing because it will be replaced keyEventInput
     })
-
     this.child.keyEventInput.subscribe(e => {
       console.log('keyboard event:' + e.domEvent.keyCode + ', ' + e.key);
 
@@ -63,6 +66,60 @@ export class ExampleComponent implements OnInit, AfterViewInit {
         this.child.write(e.key);
       }
     })
+
+    
+    this.child2.keyEventInput.subscribe(e => {
+      console.log('keyboard event:' + e.domEvent.keyCode + ', ' + e.key);
+
+      const ev = e.domEvent;
+      const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
+
+      if (ev.keyCode === 13) {
+        this.child2.write('\n' + FunctionsUsingCSI.cursorColumn(1) + '$ '); // \r\n
+      } else if (ev.keyCode === 8) {
+        // Do not delete the prompt
+        if (this.child2.underlying.buffer.cursorX > 2) {
+          this.child2.write('\b \b');
+        }
+      } else if (printable) {
+        this.child2.write(e.key);
+      }
+    })
+    this.child3.keyEventInput.subscribe(e => {
+      console.log('keyboard event:' + e.domEvent.keyCode + ', ' + e.key);
+
+      const ev = e.domEvent;
+      const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
+
+      if (ev.keyCode === 13) {
+        this.child3.write('\n' + FunctionsUsingCSI.cursorColumn(1) + '$ '); // \r\n
+      } else if (ev.keyCode === 8) {
+        // Do not delete the prompt
+        if (this.child3.underlying.buffer.cursorX > 2) {
+          this.child3.write('\b \b');
+        }
+      } else if (printable) {
+        this.child3.write(e.key);
+      }
+    })
+    this.child4.keyEventInput.subscribe(e => {
+      console.log('keyboard event:' + e.domEvent.keyCode + ', ' + e.key);
+
+      const ev = e.domEvent;
+      const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
+
+      if (ev.keyCode === 13) {
+        this.child4.write('\n' + FunctionsUsingCSI.cursorColumn(1) + '$ '); // \r\n
+      } else if (ev.keyCode === 8) {
+        // Do not delete the prompt
+        if (this.child4.underlying.buffer.cursorX > 2) {
+          this.child4.write('\b \b');
+        }
+      } else if (printable) {
+        this.child4.write(e.key);
+      }
+    })
+
     this.rowsControl.valueChanges.subscribe(() => { this.invalidate() });
     this.colsControl.valueChanges.subscribe(() => { this.invalidate() });
   }
@@ -77,6 +134,9 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     else
       this.displayOption.fixedGrid = undefined;
     this.child.setDisplayOption(this.displayOption);
+    this.child2.setDisplayOption(this.displayOption);
+    this.child3.setDisplayOption(this.displayOption);
+    this.child4.setDisplayOption(this.displayOption);
   }
 
   resizableChange(event: MatSlideToggleChange) {
